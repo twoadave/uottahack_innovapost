@@ -1,11 +1,13 @@
+
 """
-This calls the Google Maps API on all pairwise combinations of a supplied list of M addresses, and computes an MxM matrix for distances and times.
+This module is used to call the Google maps API to find travel distances/times and compute the polyline between waypoints for visualization purposes.
 
-Input: List of addresses
+Since we only have so many API calls in our free quota, this was done with efficiency in mind.
 
-Output: Distance Matrix, Time Matrix
+Your API key must be supplied in the function calls, please do not modify this file directly.
+
+Author: Wesley
 """
-
 from datetime import datetime
 import time
 import responses
@@ -13,6 +15,13 @@ import googlemaps
 import numpy as np
 import polyline
 
+"""
+This calls the Google Maps Distance Matrix API on all pairwise combinations of a supplied list of M addresses, and computes an MxM matrix for distances and times.
+
+Input: List of addresses
+
+Output: Distance Matrix, Time Matrix
+"""
 def getGoogleTimeDistance(addresses, api_key):
     gmaps = googlemaps.Client(key=api_key)
 
@@ -41,6 +50,17 @@ def getGoogleTimeDistance(addresses, api_key):
 
     return time_matrix, distance_matrix
 
+"""
+This calls the Google Directions API to get the polyline between each sequential pair of waypoints in a supplied list of addresses. They are then combined into a single polyline for the run.
+
+It is done this way because the Google Directions API finds the optimum route between two points and is not capable of doing so with a large number of waypoints.
+
+Uses the polyline Python library.
+
+Input: A list of addreses that corresponds to the optimum route.
+
+Output: A list of latitude/longitude tuples used to form the polyline.
+"""
 def getPolyline(addresses, api_key):
     gmaps = googlemaps.Client(key=api_key)
     curDate = datetime.now()
