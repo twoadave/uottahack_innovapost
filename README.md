@@ -3,6 +3,8 @@ By David Gayowsky, Alfa Budiman, Wesley Howe, and Jordan Lipson
 
 To optimize Innovapost's delivery routes, we have created an algorithm to find the best way to divide deliveries between mail trucks and the fastest route for each of them, factoring in traffic, accidents, road closures, and weather conditions.
 
+ShipPy: Ship faster with ShipPy - your optimal destination awaits!
+
 ## How does it work?
 Let's say Innovapost has a list of addresses they need to make deliveries to and a certain number of mail trucks available.
 
