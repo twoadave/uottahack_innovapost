@@ -11,6 +11,7 @@ import time
 import responses
 import googlemaps
 import numpy as np
+import polyline
 
 def getGoogleTimeDistance(addresses, api_key):
     gmaps = googlemaps.Client(key=api_key)
@@ -49,10 +50,6 @@ def getPolyline(addresses, api_key):
         result = gmaps.directions(origin = addresses[i], destination = addresses[i+1], mode='driving',units= 'metric', traffic_model='best_guess', departure_time = curDate)
 
         for x in result[0]['legs'][0]['steps']:
-            next = x['end_location']
-            next_next = x['start_location']
-
-            polyline_coords.append((next['lat'], next['lng']))
-            polyline_coords.append((next_next['lat'], next_next['lng']))
+            polyline_coords.extend(polyline.decode(x['polyline']['points']))
 
     return polyline_coords
