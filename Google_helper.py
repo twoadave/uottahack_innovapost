@@ -39,3 +39,20 @@ def getGoogleTimeDistance(addresses, api_key):
             time_matrix[i][j] = curElement['duration']['value']
 
     return time_matrix, distance_matrix
+
+def getPolyline(addresses, api_key):
+    gmaps = googlemaps.Client(key=api_key)
+    curDate = datetime.now()
+
+    polyline_coords = []
+    for i in range(0, len(addresses) - 1):
+        result = gmaps.directions(origin = addresses[i], destination = addresses[i+1], mode='driving',units= 'metric', traffic_model='best_guess', departure_time = curDate)
+
+        for x in result[0]['legs'][0]['steps']:
+            next = x['end_location']
+            next_next = x['start_location']
+
+            polyline_coords.append((next['lat'], next['lng']))
+            polyline_coords.append((next_next['lat'], next_next['lng']))
+
+    return polyline_coords
